@@ -19,7 +19,6 @@ class BoardResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'user' => new UserResource($this->user),
-            'pins' => PinResource::collection($this->pins),
         ];
     }
 }
