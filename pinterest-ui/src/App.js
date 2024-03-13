@@ -9,6 +9,7 @@ import Home from "./stranice/Home";
 import About from "./stranice/About";
 import MyBoard from "./stranice/MyBoard";
 import Account from "./stranice/Account";
+import Footer from './komponente/Footer';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/my-boards" element={<MyBoard />} />
                 <Route path="/account" element={<Account />} />
             </Routes>
+            <Footer />
             </Container>
         </BrowserRouter>
     </>
