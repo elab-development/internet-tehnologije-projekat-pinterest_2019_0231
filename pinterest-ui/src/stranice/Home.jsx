@@ -18,6 +18,12 @@ const Home = () => {
             });
     }, []);
 
+    const [selectedBoard, setSelectedBoard] = useState(null);
+
+    const selectBoard = (board) => {
+        setSelectedBoard(board);
+    }
+
     return (
         <div>
 
@@ -26,18 +32,29 @@ const Home = () => {
                 <p className="text-muted">Here you can find a lot of interesting boards</p>
             </div>
 
-            <Row>
+            { selectedBoard === null && (<Row>
 
             {
                 data && data.map(board => {
                     return (
                         <Col md={4} xs={12} lg={3} key={board.id}>
-                            <Board  title={board.title} description={board.description} email={board.user.email} variantNumber={Math.floor(Math.random() * 6)}/>
+                            <Board  title={board.title} description={board.description} email={board.user.email} variantNumber={Math.floor(Math.random() * 6)} selectBoard={() => { selectBoard(board)}}/>
                         </Col>
                     );
                 })
             }
-            </Row>
+            </Row> )
+            }
+
+            { selectedBoard !== null && (
+                <div>
+                    <h1 className="text-center m-3">{selectedBoard.title}</h1>
+                    <p className="text-center m-3">{selectedBoard.description}</p>
+                    <p className="text-center m-3">Owned by: {selectedBoard.user.email}</p>
+                    <button className="btn btn-primary" onClick={() => setSelectedBoard(null)}>Back</button>
+                </div>
+            )
+            }
 
         </div>
     );
