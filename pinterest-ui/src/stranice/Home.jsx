@@ -53,8 +53,8 @@ const Home = () => {
                 {
                     data && data.map(board => {
                         return (
-                            <Col md={4} xs={12} lg={34} key={board.id}>
-                                <Board title={board.title} description={board.description} email={board.user.email}
+                            <Col md={4} xs={12} lg={3} key={board.id}>
+                                <Board id={board.id} allowDelete={false} title={board.title} description={board.description} email={board.user.email}
                                        variantNumber={Math.floor(Math.random() * 6)} selectBoard={() => {
                                     selectBoard(board)
                                 }}/>

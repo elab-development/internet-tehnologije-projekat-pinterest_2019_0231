@@ -18,7 +18,8 @@ const Login = () => {
     const handleSubmit = (e) => {
         instanca.post("login", formData).then(response => {
             console.log(response.data);
-            window.sessionStorage.setItem("token", response.data.token);
+            window.sessionStorage.setItem("token", response.data.podaci.token);
+            window.sessionStorage.setItem("userId", response.data.podaci.korisnik.id);
             window.location.href = "/";
         }).catch(error => {
             console.log(error);

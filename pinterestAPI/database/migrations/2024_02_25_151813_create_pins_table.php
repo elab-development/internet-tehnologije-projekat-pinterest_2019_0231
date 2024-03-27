@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('pin_description');
             $table->string('image');
             $table->unsignedBigInteger('board_id');
-            $table->foreign('board_id')->references('id')->on('boards');
+            $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
             $table->timestamps();
         });
     }

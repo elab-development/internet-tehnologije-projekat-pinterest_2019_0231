@@ -1,14 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, Card} from "react-bootstrap";
+import instanca from "../axios-instanca/instanca";
 
 const Board = props => {
 
-    const {title, description, email, variantNumber, selectBoard} = props;
+    const {title, description, email, variantNumber, selectBoard, allowDelete, id} = props;
 
     const variants = [
         'primary', 'secondary', 'success', 'danger', 'warning', 'info',
     ];
+
+    const deleteBoard = () => {
+        instanca.delete("boards/"+id).then(response => {
+            console.log(response.data);
+            window.location.reload();
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     return (
         <>
@@ -26,6 +36,7 @@ const Board = props => {
                         {description}
                     </Card.Text>
                     <Button onClick={selectBoard} variant="light">Details</Button>
+                    {allowDelete && <Button onClick={deleteBoard} className="ms-2" variant="danger">Delete</Button>}
                 </Card.Body>
             </Card>
         </>
@@ -37,7 +48,9 @@ Board.propTypes = {
     description: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     variantNumber: PropTypes.number,
-    selectBoard: PropTypes.func
+    selectBoard: PropTypes.func,
+    allowDelete: PropTypes.bool,
+    id: PropTypes.number.isRequired
 };
 
 export default Board;
