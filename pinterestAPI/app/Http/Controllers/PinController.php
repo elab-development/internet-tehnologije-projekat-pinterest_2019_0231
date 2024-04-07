@@ -92,7 +92,7 @@ class PinController extends GlavniController
 
     public function paginatePins(Request $request)
     {
-        $perPage = $request->input('per_page') ?? 5;
+        $perPage = $request->input('per_page') ?? 10;
         $pins = Pin::paginate($perPage);
         return $this->uspesno($pins, 'Svi pinovi su uspesno prikazani');
     }
