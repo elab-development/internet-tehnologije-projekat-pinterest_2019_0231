@@ -3,18 +3,32 @@ import instanca from "../axios-instanca/instanca";
 import {Col, Row} from "react-bootstrap";
 import Board from "../komponente/Board";
 import PinCard from "../komponente/PinCard";
+import {CSVDownload, CSVLink} from "react-csv";
 
 const MyBoard = () => {
 
     const [data, setData] = useState([]);
     const [pins, setPins] = useState([]);
 
+    const [csvData, setCsvData] = useState([]);
+
     useEffect(() => {
         let userId = window.sessionStorage.getItem("userId");
         instanca.get("user-boards/"+userId)
             .then(response => {
                 console.log(response.data);
-                setData(response.data.podaci);
+                let podaci = response.data.podaci;
+                setData(podaci);
+
+                let dataForCSV = [["Title", "Description"]];
+
+                for (let i = 0; i < podaci.length; i++){
+                    dataForCSV.push([podaci[i].title, podaci[i].description]);
+                }
+
+                setCsvData(dataForCSV);
+
+                console.log(dataForCSV);
             })
             .catch(error => {
                 console.log(error);
@@ -75,7 +89,7 @@ const MyBoard = () => {
 
             )}
 
-            {selectedBoard !== null && (<Row>
+            {selectedBoard !== null && (<><Row>
                 {
                     pins && pins.map(pin => {
                         return (
@@ -85,11 +99,13 @@ const MyBoard = () => {
                         );
                     })
                 }
-            </Row>)
+            </Row>
+                <button className="btn btn-primary mt-3" onClick={() => setSelectedBoard(null)}>Back</button>
+            </>)
             }
 
-            <button className="btn btn-primary mt-3" onClick={() => setSelectedBoard(null)}>Back</button>
-
+            <hr/>
+            <CSVLink data={csvData}>Download your data</CSVLink>;
 
         </div>
     );
