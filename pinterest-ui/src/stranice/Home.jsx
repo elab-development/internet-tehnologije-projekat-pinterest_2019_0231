@@ -8,6 +8,7 @@ const Home = () => {
 
     const [data, setData] = useState([]);
     const [pins, setPins] = useState([]);
+    const [filteredPins, setFilteredPins] = useState([]);
 
     const [person, setPerson] = useState(null);
 
@@ -32,6 +33,7 @@ const Home = () => {
             .then(response => {
                 console.log(response.data);
                 setData(response.data.podaci);
+                setFilteredPins(response.data.podaci);
             })
             .catch(error => {
                 console.log(error);
@@ -66,10 +68,25 @@ const Home = () => {
                 <p className="text-muted">Here you can find a lot of interesting boards</p>
             </div>
 
+            <Row>
+                <Col md={12}>
+                    <input type="text" className="form-control" placeholder="Search for boards" onChange={(e) => {
+                        let search = e.target.value;
+
+                        if (search === "") return setFilteredPins(data);
+                        
+                        let filtered = data.filter(board => {
+                            return board.title.toLowerCase().includes(search.toLowerCase());
+                        });
+                        setFilteredPins(filtered);
+                    }}/>
+                </Col>
+            </Row>
+
             {selectedBoard === null && (<Row>
 
                 {
-                    data && data.map(board => {
+                    filteredPins && filteredPins.map(board => {
                         return (
                             <Col md={4} xs={12} lg={3} key={board.id}>
                                 <Board id={board.id} allowDelete={false} title={board.title} description={board.description} email={board.user.email}
