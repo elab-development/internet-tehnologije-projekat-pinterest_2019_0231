@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BoardController extends GlavniController
 {
@@ -75,5 +76,14 @@ class BoardController extends GlavniController
     {
         $boards = Board::where('user_id', $id)->get();
         return $this->uspesno(BoardResource::collection($boards), 'Sve table korisnika su uspesno prikazane');
+    }
+    public function pinsPerBoard(Request $request)
+    {
+        $pinsPerBoards = Board::select('boards.title', DB::raw('count(pins.id) as pins_count'))
+            ->join('pins', 'boards.id', '=', 'pins.board_id')
+            ->groupBy('boards.title')
+            ->get();
+
+        return $this->uspesno($pinsPerBoards, 'Broj pinova po tablama je uspesno prikazan');
     }
 }

@@ -33,6 +33,7 @@ Route::post('/unfollow', 'App\Http\Controllers\FollowersController@unfollow');
 Route::get('/pins-paginate', 'App\Http\Controllers\PinController@paginatePins');
 Route::get('/board-pins/{id}', 'App\Http\Controllers\PinController@boardPins');
 Route::get('/user-boards/{id}', 'App\Http\Controllers\BoardController@userBoards');
+Route::get('/pin-per-board', 'App\Http\Controllers\BoardController@pinsPerBoard');
 
 
 Route::apiResource('boards', 'App\Http\Controllers\BoardController')->only(['index', 'show']);
