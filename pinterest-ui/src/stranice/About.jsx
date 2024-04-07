@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import nina from "../slike/nina.jpeg";
 import mihajlo from "../slike/mihajlo.jpeg";
+import instanca from "../axios-instanca/instanca";
 
 const About = () => {
 
@@ -19,6 +20,19 @@ const About = () => {
             picture: mihajlo
         },
     ];
+
+    const [persons, setPersons] = useState([]);
+
+    useEffect(() => {
+        instanca.get("https://randomuser.me/api/?results=4")
+            .then(response => {
+                console.log(response.data);
+                setPersons(response.data.results)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
     return (
         <div>
@@ -39,6 +53,32 @@ const About = () => {
                         </Row>
                     );
                 })
+            }
+
+            {
+                persons && (
+                    <>
+                    
+                        <h1>Rest of the team</h1>
+
+                        {
+                            persons.map((person) => {
+                                return (
+                                    <Row key={person.login.uuid}>
+                                        <Col md={8}>
+                                            <h3>{person.name.first} {person.name.last}</h3>
+                                            <p>{person.location.city}</p>
+                                        </Col>
+                                        <Col md={4}>
+                                            <img src={person.picture.large} alt={person.name.first} className="img img-thumbnail"/>
+                                        </Col>
+                                    </Row>
+                                );
+                            })
+                        }
+                    
+                    </>
+                )
             }
         </div>
     );
