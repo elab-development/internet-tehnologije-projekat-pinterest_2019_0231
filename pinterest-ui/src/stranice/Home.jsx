@@ -9,6 +9,24 @@ const Home = () => {
     const [data, setData] = useState([]);
     const [pins, setPins] = useState([]);
 
+    const [person, setPerson] = useState(null);
+
+    useEffect(() => {
+        instanca.get("https://randomuser.me/api/")
+            .then(response => {
+                console.log(response.data);
+                setPerson({
+                    name: response.data.results[0].name.first + " " + response.data.results[0].name.last,
+                    description: response.data.results[0].location.city,
+                    picture: response.data.results[0].picture.large
+
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
     useEffect(() => {
         instanca.get("boards")
             .then(response => {
@@ -74,24 +92,41 @@ const Home = () => {
 
             )}
 
-            {selectedBoard !== null && (<Row>
-                {
-                    pins && pins.map(pin => {
-                        return (
-                            <Col key={pin.id} md={4} xs={12} lg={3}>
-                                <PinCard title={pin.pin_title} description={pin.pin_description} image={pin.image}/>
-                            </Col>
-                        );
-                    })
+            {selectedBoard !== null && (<><Row>
+                    {
+                        pins && pins.map(pin => {
+                            return (
+                                <Col key={pin.id} md={4} xs={12} lg={3}>
+                                    <PinCard title={pin.pin_title} description={pin.pin_description} image={pin.image}/>
+                                </Col>
+                            );
+                        })
+                    }
+                </Row>
+                <button className="btn btn-primary mt-3" onClick={() => setSelectedBoard(null)}>Back</button>
+                </>
+                )
                 }
-            </Row>)
+                <hr/>
+            {
+                person && (
+                    <>
+                    <h1>User of the month: </h1>
+                    <Row>
+                        <Col md={8}>
+                            <img src={person.picture} alt={person.name} className="img img-thumbnail"/>
+                        </Col>
+                        <Col md={4}>
+                            <h3>{person.name}</h3>
+                            <p>{person.description}</p>
+                        </Col>
+
+                    </Row>
+                    </>
+                )
             }
+                </div>
+            );
+            };
 
-            <button className="btn btn-primary mt-3" onClick={() => setSelectedBoard(null)}>Back</button>
-
-
-        </div>
-    );
-};
-
-export default Home;
+            export default Home;
