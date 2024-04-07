@@ -1,11 +1,10 @@
-
-
 import React from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 
 const Navigacija = () => {
 
     const token = window.sessionStorage.getItem("token");
+    const admin = window.sessionStorage.getItem("admin") === "admin";
     const handleLogout = (e) => {
         e.preventDefault();
         window.sessionStorage.removeItem("token");
@@ -26,6 +25,11 @@ const Navigacija = () => {
                                 <>
                                     <Nav.Link href="/my-boards">My Boards</Nav.Link>
                                     <Nav.Link href="/account">My Account</Nav.Link>
+                                    {
+                                        admin && (
+                                            <Nav.Link href="/admin">Admin</Nav.Link>
+                                        )
+                                    }
                                     <Nav.Link href="/logout" onClick={
                                         (e) => {
                                             handleLogout(e);

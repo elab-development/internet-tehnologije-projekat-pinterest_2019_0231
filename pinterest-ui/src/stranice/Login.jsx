@@ -20,6 +20,7 @@ const Login = () => {
             console.log(response.data);
             window.sessionStorage.setItem("token", response.data.podaci.token);
             window.sessionStorage.setItem("userId", response.data.podaci.korisnik.id);
+            window.sessionStorage.setItem("admin", response.data.podaci.korisnik.role);
             window.location.href = "/";
         }).catch(error => {
             console.log(error);
